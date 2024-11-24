@@ -24,28 +24,20 @@ class Server{
     this.app = express()
     this.listen()
     this.dbConnection()
-
-    this.pathCategoria = "/api/categorias"
-    this.pathComprobante = "/api/comprobantes"
-    this.pathMovimiento = "/api/movimientos"
-    this.pathUnidadMedida = "/api/unidadesMedida"
     this.pathInsumos = "/api/insumos"
-
-
-
     this.route()
     
     }
 
     route (){
         this.app.use(json())
-        this.app.use(this.pathCategoria, categoriaRouter)
-        this.app.use(this.pathComprobante, comprobanteRouter)
+        this.app.use(this.pathInsumos, categoriaRouter)
+        this.app.use(this.pathInsumos, comprobanteRouter)
         this.app.use(this.pathInsumos, inicioSesionRouter)
         this.app.use(this.pathInsumos, registroRouter)
         this.app.use(this.pathInsumos, insumoRouter)
-        this.app.use(this.pathMovimiento, movimientoRouter)
-        this.app.use(this.pathUnidadMedida, unidadMedidaRouter)
+        this.app.use(this.pathInsumos, movimientoRouter)
+        this.app.use(this.pathInsumos, unidadMedidaRouter)
 
     }
 

@@ -10,18 +10,18 @@ import {
 const movimientoRouter = Router();
 
 // Ruta para obtener todos los movimientos
-movimientoRouter.get('/', getMovimientos);
+movimientoRouter.get('/movimientos/', getMovimientos);
 
 // Ruta para crear un nuevo movimiento
-movimientoRouter.post('/', postMovimiento); // Requiere un JSON en el body con los datos del movimiento
+movimientoRouter.post('/movimientos/', postMovimiento); // Requiere un JSON en el body con los datos del movimiento
 
 // Ruta para obtener un movimiento por su ID
-movimientoRouter.get('/:id', getMovimientoById); // Requiere el id_movimiento como parámetro en la URL
+movimientoRouter.get('/movimientos/:id', getMovimientoById); // Requiere el id_movimiento como parámetro en la URL
 
 // Ruta para actualizar un movimiento por su ID
-movimientoRouter.put('/:id', putMovimiento); // Requiere el id_movimiento como parámetro y los datos a actualizar en el body
+movimientoRouter.put('/movimientos/:id', putMovimiento); // Requiere el id_movimiento como parámetro y los datos a actualizar en el body
 
 // Ruta para eliminar un movimiento por su ID
-movimientoRouter.delete('/:id', deleteMovimiento); // Requiere el id_movimiento como parámetro en la URL
+movimientoRouter.delete('/movimientos/:id', deleteMovimiento); // Requiere el id_movimiento como parámetro en la URL
 
 export default movimientoRouter;
