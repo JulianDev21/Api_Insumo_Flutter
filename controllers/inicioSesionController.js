@@ -20,7 +20,7 @@ export const iniciarSesion = async (req, res) => {
     // Crear un token JWT sin el rol
     const token = jwt.sign(
       { id: usuario._id },
-      process.env.JWT_SECRET || 'secreto', // Reemplaza con una variable de entorno
+      process.env.JWT_SECRET, // Reemplaza con una variable de entorno
       { expiresIn: '1h' } // Tiempo de expiración del token
     );
 

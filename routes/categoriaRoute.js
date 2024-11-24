@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { verificarToken } from '../middlewares/verificarToken.js';
 import { 
     getCategorias, 
     getCategoriaById, 
@@ -8,6 +9,9 @@ import {
 } from '../controllers/categoriaController.js';
 
 const categoriaRouter = Router();
+
+// Aplicar verificarToken a todas las rutas del router
+categoriaRouter.use(verificarToken); 
 
 // Ruta para obtener todas las categorías
 categoriaRouter.get('/categorias/', getCategorias);
