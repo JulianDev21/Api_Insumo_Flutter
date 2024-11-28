@@ -102,19 +102,34 @@ export const putInsumo = async (req, res) => {
   }
 };
 
-// Eliminar un insumo
 export const deleteInsumo = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const insumoEliminado = await Insumo.findOneAndDelete({ id_insumo: id });
+    // Buscar el insumo antes de eliminarlo
+    const insumo = await Insumo.findOne({ id_insumo: id });
 
-    if (!insumoEliminado) {
+    // Validar si el insumo existe
+    if (!insumo) {
       return res.status(404).json({ mensaje: 'Insumo no encontrado' });
     }
 
-    return res.status(200).json({ mensaje: 'Insumo eliminado', insumo: insumoEliminado });
+    // Verificar si la cantidad es mayor a 0
+    if (insumo.cantidad != 0) {
+      return res.status(400).json({
+        mensaje: 'No se puede eliminar el insumo porque su cantidad no es 0',
+      });
+    }
+
+    // Eliminar el insumo
+    const insumoEliminado = await Insumo.findOneAndDelete({ id_insumo: id });
+
+    return res.status(200).json({
+      mensaje: 'Insumo eliminado correctamente',
+      insumo: insumoEliminado,
+    });
   } catch (error) {
     return res.status(500).json({ mensaje: 'Error al eliminar el insumo', error });
   }
 };
+

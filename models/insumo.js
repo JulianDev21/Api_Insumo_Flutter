@@ -15,6 +15,7 @@ const insumoSchema = new Schema(
       cantidad: {
         type: Number,
         required: true,
+        default: 0, // Cantidad inicial por defecto 0
       },
       precio_unitario: {
         type: Number,
