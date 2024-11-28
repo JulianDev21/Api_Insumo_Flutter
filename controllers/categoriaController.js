@@ -89,6 +89,7 @@ export const putCategoria = async (req, res) => {
 // Eliminar una categoría
 export const deleteCategoria = async (req, res) => {
   const { id } = req.params; // ID de la categoría a eliminar
+
   try {
     // Verificar si hay insumos asociados a la categoría
     const insumosAsociados = await Insumo.find({ id_categoria: id });
@@ -100,8 +101,8 @@ export const deleteCategoria = async (req, res) => {
       });
     }
 
-    // Si no hay insumos asociados, proceder a eliminar la categoría
-    const categoriaEliminada = await Categoria.findByIdAndDelete(id);
+    // Si no hay insumos asociados, proceder a eliminar la categoría por id_categoria
+    const categoriaEliminada = await Categoria.findOneAndDelete({ id_categoria: id });
 
     if (!categoriaEliminada) {
       return res.status(404).json({
