@@ -1,5 +1,6 @@
 import Categoria from '../models/categoria.js'; // Ajusta la ruta según la ubicación de tu modelo
 import Counter from '../models/counter.js'; // Asegúrate de importar el modelo Counter correctamente
+import Insumo from '../models/insumo.js'
 
 // Crear una nueva categoría
 export const postCategoria = async (req, res) => {
@@ -85,17 +86,34 @@ export const putCategoria = async (req, res) => {
 };
 
 // Eliminar una categoría
+// Eliminar una categoría
 export const deleteCategoria = async (req, res) => {
+  const { id } = req.params; // ID de la categoría a eliminar
   try {
-    const { id } = req.params;
-    const categoriaEliminada = await Categoria.findOneAndDelete({ id_categoria: id });
+    // Verificar si hay insumos asociados a la categoría
+    const insumosAsociados = await Insumo.find({ id_categoria: id });
 
-    if (!categoriaEliminada) {
-      return res.status(404).json({ mensaje: 'Categoría no encontrada' });
+    if (insumosAsociados.length > 0) {
+      // Si hay insumos asociados, no permitir la eliminación
+      return res.status(400).json({
+        mensaje: 'No se puede eliminar la categoría porque tiene insumos asociados',
+      });
     }
 
-    return res.status(200).json({ mensaje: 'Categoría eliminada con éxito' });
+    // Si no hay insumos asociados, proceder a eliminar la categoría
+    const categoriaEliminada = await Categoria.findByIdAndDelete(id);
+
+    if (!categoriaEliminada) {
+      return res.status(404).json({
+        mensaje: 'Categoría no encontrada',
+      });
+    }
+
+    return res.status(200).json({ mensaje: 'Categoría eliminada exitosamente' });
   } catch (error) {
-    return res.status(500).json({ mensaje: 'Error al eliminar la categoría', error });
+    return res.status(500).json({
+      mensaje: 'Error al eliminar la categoría',
+      error,
+    });
   }
 };

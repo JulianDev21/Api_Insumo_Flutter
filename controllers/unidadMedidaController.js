@@ -1,5 +1,7 @@
 import UndMedida from '../models/unidadMedida.js'; // Ajusta la ruta según sea necesario
 import Counter from '../models/counter.js'; // Ajusta la ruta según sea necesario
+import Insumo from '../models/insumo.js'
+
 
 // Crear una nueva unidad de medida
 export const postUnidadMedida = async (req, res) => {
@@ -87,13 +89,24 @@ export const deleteUnidadMedida = async (req, res) => {
   try {
     const { id } = req.params;
 
+    // Verificar si hay insumos asociados a la unidad de medida
+    const insumosAsociados = await Insumo.find({ id_und_medida: id });
+
+    if (insumosAsociados.length > 0) {
+      // Si hay insumos asociados, no permitir la eliminación
+      return res.status(400).json({
+        mensaje: 'No se puede eliminar la unidad de medida porque está asociada a uno o más insumos',
+      });
+    }
+
+    // Si no hay insumos asociados, proceder a eliminar la unidad de medida
     const unidadEliminada = await UndMedida.findOneAndDelete({ id_und_medida: id });
 
     if (!unidadEliminada) {
       return res.status(404).json({ mensaje: 'Unidad de medida no encontrada' });
     }
 
-    return res.status(200).json({ mensaje: 'Unidad de medida eliminada', unidad: unidadEliminada });
+    return res.status(200).json({ mensaje: 'Unidad de medida eliminada exitosamente', unidad: unidadEliminada });
   } catch (error) {
     return res.status(500).json({ mensaje: 'Error al eliminar la unidad de medida', error });
   }
